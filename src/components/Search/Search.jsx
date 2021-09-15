@@ -17,11 +17,9 @@ const InputContainer = styled.div`
 position: relative;
 `;
 
-export const Search = ({token}) => {
+export const Search = ({token, setArtist, setSongs}) => {
 
 	const [searchValue, setSearchValue] = useState('');
-	const [songs, setSongs] = useState({});
-	const [artist, setArtist] = useState({});
 
 	const handleInputValue = (e) => {
 		e.preventDefault();
@@ -40,16 +38,14 @@ export const Search = ({token}) => {
 				Authorization: 'Bearer ' + token
 			}
 		}).then(res => {
-			setSongs(res.data);
-			console.log(res.data);
+			setSongs(res.data.tracks.items);
 		});
 		axios.get(`https://api.spotify.com/v1/search?q=${searchValue}&type=artist&limit=20`,{
 			headers: {
 				Authorization: 'Bearer ' + token
 			}
 		}).then(res => {
-			setArtist(res.data);
-			console.log(res.data);
+			setArtist(res.data.artists.items);
 		});
 	};
 
@@ -65,5 +61,7 @@ export const Search = ({token}) => {
 };
 
 Search.propTypes = {
-	token : PropTypes.string
+	token : PropTypes.string,
+	setArtist: PropTypes.any,
+	setSongs: PropTypes.any
 };

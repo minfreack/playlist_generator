@@ -9,7 +9,7 @@ export const ProfileInfo = ({username}) => {
 
 
 	return (
-		<SectionFlex direction="row" align="center" justify="center">
+		<SectionFlex direction="row" align="center" justify="center" gap="1rem">
 			<Img user src={profile} width={60}></Img>
 			<P>{username}</P>
 		</SectionFlex>

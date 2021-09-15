@@ -9,13 +9,20 @@ import { Footer } from '../Footer/Footer';
 import { ProfileInfo } from '../ProfileInfo/ProfileInfo';
 import { Search } from '../Search/Search';
 import axios from 'axios';
+import { ArtistInfo } from '../ArtistInfo/ArtistInfo';
+import { SongInfo } from '../SongInfo/SongInfo';
+import { GenreInfo } from '../GenreInfo/GenreInfo';
 
 export const Generador = () => {
-
-	// const USER_ENDPOINT = '	https://api.spotify.com/v1/me';
 	
 	const [token, setToken] = useState('');
 	const [data, setData] = useState('');
+	const [songs, setSongs] = useState([]);
+	const [artist, setArtist] = useState([]);
+	const [genres, setGenres] = useState([]);
+	const [songsUser, setSongsUser] = useState([]);
+	const [artistUser, setArtistUser] = useState([]);
+	const [genresUser, setGenresUser] = useState([]);
 
 	const getSpotifyParams = (hash) => {
 		const stringAfterHashtag = hash.substring(1);
@@ -39,7 +46,15 @@ export const Generador = () => {
 		});
 	};
 
-
+	const handleGetGenders = async(access_token) => {
+		await axios.get('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
+			headers: {
+				Authorization: 'Bearer ' +access_token,
+			}
+		}).then( res => {
+			setGenres(res.data.genres);
+		});
+	};
 
 	useEffect(() => {
 		if(window.location.hash){
@@ -47,6 +62,7 @@ export const Generador = () => {
 			localStorage.clear();
 			setToken(access_token);
 			handleGetUser(access_token);
+			handleGetGenders(access_token);
 			localStorage.setItem('access_token', access_token);
 			localStorage.setItem('expires_in', expires_in);
 			localStorage.setItem('token_type', token_type);
@@ -56,23 +72,51 @@ export const Generador = () => {
 
 	return (
 		<>
-			<SectionFlex variant direction="row" align="center" justify="space-between" padding=" 0 3.5rem">
+			<SectionFlex variant direction="row" align="center" justify="space-between" padding=" 0 3.5rem" gap="0">
 				<ProfileInfo username={data.display_name}/>
 				<Title>Playlist Generator</Title>
 				<Button>Ir al generador</Button>
 			</SectionFlex>
-			<Search token={token}/>
+			<Search token={token} setArtist={setArtist} setSongs={setSongs}/>
 			<SectionGrid variant>
 				<Card>
 					<H3>Artistas</H3>
-					<SectionFlex>
+					<SectionFlex direction="column" gap="1rem">
+						{
+							artist?.map( ({name, images, id}) => {
+								
+								return (
+									<ArtistInfo key={id} id={id} name={name} images={images} artistUser={artistUser} setArtistUser={setArtistUser}></ArtistInfo>
+								);
+							})
+						}
 					</SectionFlex>
 				</Card>
 				<Card>
 					<H3>Canciones</H3>
+					<SectionFlex direction="column" gap="1rem">
+						{
+							songs?.map( ({name, album, id}) => {
+								
+								return (
+									<SongInfo key={id} id={id} name={name} album={album} songsUser={songsUser} setSongsUser={setSongsUser}></SongInfo>
+								);
+							})
+						}
+					</SectionFlex>
 				</Card>
 				<Card>
 					<H3>Géneros</H3>
+					<SectionFlex direction="row" gap="1rem" wrap="wrap">
+						{
+							genres?.map( (genre, i) => {
+								return (
+									
+									<GenreInfo  key={i} genre={genre} genresUser={genresUser} setGenresUser={setGenresUser}></GenreInfo>
+								);
+							})
+						}
+					</SectionFlex>
 				</Card>
 			</SectionGrid>
 			<Footer/>
