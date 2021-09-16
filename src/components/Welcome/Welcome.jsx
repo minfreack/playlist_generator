@@ -29,7 +29,7 @@ export const Welcome = () => {
 			<Title>Playlist Generator</Title>
 			<SectionGrid twoColumns>
 				<Img width={450} src={welcomeImg}></Img>
-				<SectionFlex direction="column" justify="center">
+				<SectionFlex direction="column" justify="center" gap="1rem">
 					<H2>¿Qué te parece si hoy escuchas algo totalmente nuevo?</H2>
 					<H3>Sabemos que algunas veces escuchar las mismas canciones es aburrido así que ¡déjanos hacerte una playlist!</H3>
 					<Button onClick={requestAuthorization}>¡Comenzar!</Button>

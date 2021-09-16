@@ -26,7 +26,7 @@ export const Generador = () => {
 	const [songsUser, setSongsUser] = useState([]);
 	const [artistUser, setArtistUser] = useState([]);
 	const [genresUser, setGenresUser] = useState([]);
-	const [modal, setModal] = useState(true);
+	const [modal, setModal] = useState(false);
 	const [userId, setUserId] = useState('');
 
 	const getSpotifyParams = (hash) => {

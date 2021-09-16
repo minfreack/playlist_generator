@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Button = styled.a`
 border-radius: .5rem;
 background-color: #23BC55;
+color: #fff;
 cursor: pointer;
 text-decoration: none;
 text-align: center;

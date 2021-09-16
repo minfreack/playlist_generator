@@ -76,19 +76,14 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 				playlistInfo.url = res.data.external_urls.spotify;
 				playlistInfo.id = res.data.id;
 				setUrlPlaylist(res.data.external_urls.spotify);
-				console.log('CREO PLAYLIST CON EXITO');
 			});
-			console.log(artists.substr(3));
-			console.log(genres.substr(3));
-			console.log(songs.substr(3));
-			await axios.get(`https://api.spotify.com/v1/recommendations?limit=10&seed_artists=${artists.substr(3)}&seed_genres=${genres.substr(3)}&seed_tracks=${songs.substr(3)}`,{
+			await axios.get(`https://api.spotify.com/v1/recommendations?limit=50&seed_artists=${artists.substr(3)}&seed_genres=${genres.substr(3)}&seed_tracks=${songs.substr(3)}`,{
 				headers: {
 					Authorization: 'Bearer '+ token,
 					Accept: 'application/json',
 				},
 			}).then(res => {
 				recommendations = res.data.tracks;
-				console.log('RECOMENDACIONES EXITOSAS');
 				for (const recommendation of recommendations) {
 					recommendationsURI += `%2C${recommendation.uri}`;
 				}
@@ -101,7 +96,6 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 					'Content-Type': 'application/json',
 				},
 			});
-			console.log('Llenado correcto');
 		} catch (error) {
 			console.log(error);
 		}
