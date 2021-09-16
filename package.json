@@ -1,6 +1,5 @@
 {
   "name": "playlist-generator",
-  "homepage": "https://minfreack.github.io/playlist_generator",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
