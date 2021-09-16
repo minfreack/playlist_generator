@@ -54,7 +54,7 @@ export const Search = ({token, setArtist, setSongs}) => {
 			<P>Selecciona por lo menos 1 artista, 1 canción y un género. ¡Esto nos ayudará a darnos una idea de qué es lo que te gusta!</P>
 			<InputContainer>
 				<InputIcon src={search} width={30} onClick={handleSearch}/>
-				<InputText onChange={handleInputValue} onKeyDown={handleEnter} placeholder="Escríbe un artista o canción..." value={searchValue}/>
+				<InputText onChange={handleInputValue} onKeyDown={handleEnter} placeholder="Escríbe un artista o canción..." width='45rem' value={searchValue}/>
 			</InputContainer>
 		</SectionFlex>
 	);

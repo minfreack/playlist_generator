@@ -12,6 +12,9 @@ import axios from 'axios';
 import { ArtistInfo } from '../ArtistInfo/ArtistInfo';
 import { SongInfo } from '../SongInfo/SongInfo';
 import { GenreInfo } from '../GenreInfo/GenreInfo';
+import { P } from '../Commons/P';
+import { Modal } from '../Modal/Modal';
+import { Redirect } from 'react-router';
 
 export const Generador = () => {
 	
@@ -23,6 +26,8 @@ export const Generador = () => {
 	const [songsUser, setSongsUser] = useState([]);
 	const [artistUser, setArtistUser] = useState([]);
 	const [genresUser, setGenresUser] = useState([]);
+	const [modal, setModal] = useState(true);
+	const [userId, setUserId] = useState('');
 
 	const getSpotifyParams = (hash) => {
 		const stringAfterHashtag = hash.substring(1);
@@ -36,14 +41,21 @@ export const Generador = () => {
 	};
 
 	const handleGetUser = async(access_token) => {
-		await axios.get('	https://api.spotify.com/v1/me', {
-			headers: {
-				Authorization: 'Bearer ' +access_token,
+		try {
+			await axios.get('	https://api.spotify.com/v1/me', {
+				headers: {
+					Authorization: 'Bearer ' +access_token,
+				}
+			}).then(res => {
+				setData(res.data);
+				setUserId(res.data.id);
+			});
+		} catch (error) {
+			console.log(error.message);
+			if(error.message == 'Request failed with status code 401'){
+				<Redirect to="/" />;
 			}
-		}).then(res => {
-			console.log(res.data);
-			setData(res.data);
-		});
+		}
 	};
 
 	const handleGetGenders = async(access_token) => {
@@ -75,12 +87,15 @@ export const Generador = () => {
 			<SectionFlex variant direction="row" align="center" justify="space-between" padding=" 0 3.5rem" gap="0">
 				<ProfileInfo username={data.display_name}/>
 				<Title>Playlist Generator</Title>
-				<Button>Ir al generador</Button>
+				<Button onClick={() => setModal(!modal)}>Ir al generador</Button>
 			</SectionFlex>
 			<Search token={token} setArtist={setArtist} setSongs={setSongs}/>
 			<SectionGrid variant>
 				<Card>
-					<H3>Artistas</H3>
+					<SectionFlex align="center" justify="space-between">
+						<H3>Artistas</H3>
+						<P>{artistUser.length} seleccionado(s)</P>
+					</SectionFlex>
 					<SectionFlex direction="column" gap="1rem">
 						{
 							artist?.map( ({name, images, id}) => {
@@ -93,7 +108,10 @@ export const Generador = () => {
 					</SectionFlex>
 				</Card>
 				<Card>
-					<H3>Canciones</H3>
+					<SectionFlex align="center" justify="space-between">
+						<H3>Canciones</H3>
+						<P>{songsUser.length} seleccionada(s)</P>
+					</SectionFlex>
 					<SectionFlex direction="column" gap="1rem">
 						{
 							songs?.map( ({name, album, id}) => {
@@ -106,7 +124,10 @@ export const Generador = () => {
 					</SectionFlex>
 				</Card>
 				<Card>
-					<H3>Géneros</H3>
+					<SectionFlex align="center" justify="space-between">
+						<H3>Géneros</H3>
+						<P>{genresUser.length} seleccionado(s)</P>
+					</SectionFlex>
 					<SectionFlex direction="row" gap="1rem" wrap="wrap">
 						{
 							genres?.map( (genre, i) => {
@@ -118,6 +139,14 @@ export const Generador = () => {
 						}
 					</SectionFlex>
 				</Card>
+				{modal && <Modal 
+					modal={modal} 
+					setModal={setModal} 
+					token={token} 
+					userId={userId} 
+					artistUser={artistUser} 
+					songsUser={songsUser} 
+					genresUser={genresUser}/>}
 			</SectionGrid>
 			<Footer/>
 		</>

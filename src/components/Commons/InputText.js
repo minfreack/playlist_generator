@@ -8,7 +8,7 @@ border: 0;
 margin: 1rem;
 font-size: 1.1rem;
 font-weight: 500;
-width: 45rem;
+width: ${props => props.width};
 &::placeholder{
 	color: #acacac;
 }
