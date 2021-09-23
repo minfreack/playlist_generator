@@ -8,6 +8,7 @@ import { SectionFlex } from '../Commons/SectionFlex';
 import PropTypes from 'prop-types';
 import './modal.css';
 import axios from 'axios';
+import SyncLoader from 'react-spinners/SyncLoader';
 
 const StyledModal = styled.div`
 background-color: #000000;
@@ -26,6 +27,8 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 	const [playlistDesc, setPlaylistDesc] = useState('');
 	const [playlistState, setPlaylistState] = useState(true);
 	const [urlPlaylist, setUrlPlaylist] = useState('');
+	const [loading, setLoading] = useState('');
+	const [isDone, setIsDone] = useState('');
 
 	const handlePlaylistName = (e) => {
 		e.preventDefault();
@@ -40,6 +43,7 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 	};
 
 	const handleClick = async() => {
+		setLoading(true);
 		let recommendations = [];
 		let recommendationsURI = '';
 		const params = JSON.stringify(
@@ -89,7 +93,6 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 					});
 				}
 			}while(areEmpty == false);
-			console.log(recommendations.length);
 			let copyArray = [...recommendations];
 			for (let i = 0; i < recommendations.length; i++) {
 				let	item = recommendations[i];
@@ -104,7 +107,6 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 					copyArray.pop();
 				}
 			}
-			console.log(copyArray);
 			for (const recommendation of copyArray) {
 				recommendationsURI += `%2C${recommendation.uri}`;
 			}
@@ -115,8 +117,10 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 					'Content-Type': 'application/json',
 				},
 			}).then( res => {
-				console.log(res);
-			});
+				setLoading(false);
+				setIsDone(true);
+			}
+			);
 		} catch (error) {
 			console.log(error);
 		}
@@ -134,8 +138,20 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 				<P>¿Quieres compartir tu playlist?</P>
 				<P variant>Si está activado la playlist será pública</P>
 				<input type="checkbox" id="switch" checked={playlistState} onChange={handlePlaylistState}/><label htmlFor="switch">Toggle</label>
-				<Button onClick={handleClick}>Crear playlist</Button>
-				<Button href={urlPlaylist} target='_blank'>Ir a playlist</Button>
+				<SectionFlex direction='column' justify='center' align='center' wrap='wrap' gap='2rem'>
+					<Button onClick={handleClick}>Crear playlist</Button>
+					{loading && 
+					<>
+						<SyncLoader color='#fff'/> <P>Estamos creando tu playlist...</P>
+					</>
+					}
+					{console.log(loading == false)}
+					{isDone && 
+						<>
+							<P>¡Es hora de escuchar tu nueva playlist!</P> <Button href={urlPlaylist} target='_blank'>Ir a playlist</Button>
+						</>
+					}
+				</SectionFlex>
 			</SectionFlex>
 		</StyledModal>
 	);
