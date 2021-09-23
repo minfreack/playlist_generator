@@ -40,11 +40,8 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 	};
 
 	const handleClick = async() => {
-		let artists = '';
-		let songs = '';
-		let recommendations = '';
+		let recommendations = [];
 		let recommendationsURI = '';
-		let genres = '';
 		const params = JSON.stringify(
 			{
 				'name': playlistName,
@@ -52,15 +49,6 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 				'public': playlistState
 			}
 		);
-		for (const artist of artistUser) {
-			artists += `%2C${artist}`;
-		}
-		for (const song of songsUser) {
-			songs += `%2C${song}`;
-		}
-		for (const genre of genresUser) {
-			genres += `%2C${genre}`;
-		}
 		const playlistInfo = {
 			id: '',
 			url: ''
@@ -77,18 +65,45 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 				playlistInfo.id = res.data.id;
 				setUrlPlaylist(res.data.external_urls.spotify);
 			});
-			await axios.get(`https://api.spotify.com/v1/recommendations?limit=50&seed_artists=${artists.substr(3)}&seed_genres=${genres.substr(3)}&seed_tracks=${songs.substr(3)}`,{
-				headers: {
-					Authorization: 'Bearer '+ token,
-					Accept: 'application/json',
-				},
-			}).then(res => {
-				recommendations = res.data.tracks;
-				for (const recommendation of recommendations) {
-					recommendationsURI += `%2C${recommendation.uri}`;
+			let copyArtistUser = [...artistUser];
+			let copySongsUser = [...songsUser];
+			let copyGenresUser = [...genresUser];
+			let limit = Math.round(50 / (Math.round((artistUser.length + songsUser.length + genresUser.length) / 3)));
+			let areEmpty = false;
+			do {
+				if (copyArtistUser.length == 0 && copySongsUser.length == 0 && copyGenresUser.length == 0){
+					areEmpty = true;
+				}else{
+					await axios.get(`https://api.spotify.com/v1/recommendations?limit=${limit}
+					&seed_artists=${copyArtistUser.length == 0 ? artistUser[0] : copyArtistUser.pop()}
+					&seed_genres=${copyGenresUser.length == 0 ? genresUser[0] : copyGenresUser.pop()}
+					&seed_tracks=${copySongsUser.length == 0 ? songsUser[0] : copySongsUser.pop()}`,{
+						headers: {
+							Authorization: 'Bearer '+ token,
+							Accept: 'application/json',
+						},
+					}).then(res => {
+						for (const track of res.data.tracks) {
+							recommendations.push(track);
+						}
+					});
 				}
-			});
-			//Se crea string de URI para petición que llena playlist
+			}while(areEmpty == false);
+			let copyArray = [...recommendations];
+			for (let i = 0; i < recommendations.length; i++) {
+				let	item = recommendations[i];
+				for (let j = 0; j < recommendations.length; j++) {
+					if (item.id == recommendations[j].id && recommendations.indexOf(recommendations[i]) != recommendations.indexOf(recommendations[j])){
+						copyArray.splice(copyArray.indexOf(copyArray[j]), 1);
+					}
+				}
+			}
+			while (copyArray.length != 100) {
+				copyArray.pop();
+			}
+			for (const recommendation of copyArray) {
+				recommendationsURI += `%2C${recommendation.uri}`;
+			}
 			await axios.post(`https://api.spotify.com/v1/playlists/${playlistInfo.id}/tracks?uris=${recommendationsURI.substr(3)}`,{},{
 				headers: {
 					Authorization: 'Bearer '+ token,
