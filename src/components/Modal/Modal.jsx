@@ -90,6 +90,7 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 				}
 			}while(areEmpty == false);
 			let copyArray = [...recommendations];
+			console.log(copyArray.length);
 			for (let i = 0; i < recommendations.length; i++) {
 				let	item = recommendations[i];
 				for (let j = 0; j < recommendations.length; j++) {
@@ -101,6 +102,7 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 			while (copyArray.length != 100) {
 				copyArray.pop();
 			}
+			console.log(copyArray.length);
 			for (const recommendation of copyArray) {
 				recommendationsURI += `%2C${recommendation.uri}`;
 			}
