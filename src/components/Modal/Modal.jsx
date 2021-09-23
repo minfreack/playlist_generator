@@ -112,6 +112,8 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
+			}).then( res => {
+				console.log(res);
 			});
 		} catch (error) {
 			console.log(error);
