@@ -84,7 +84,7 @@ export const Generador = () => {
 
 	return (
 		<>
-			<SectionFlex variant direction="row" align="center" justify="space-between" padding=" 0 3.5rem" gap="0">
+			<SectionFlex variant direction="row" directionM="column" align="center" justify="space-between" padding="0 3.5rem" paddingM="1rem" gap="0">
 				<ProfileInfo username={data.display_name}/>
 				<Title>Playlist Generator</Title>
 				<Button onClick={() => setModal(!modal)}>Ir al generador</Button>
@@ -92,11 +92,11 @@ export const Generador = () => {
 			<Search token={token} setArtist={setArtist} setSongs={setSongs}/>
 			<SectionGrid variant>
 				<Card>
-					<SectionFlex align="center" justify="space-between">
+					<SectionFlex align="center" justify="space-between" padding="0 0 1rem 0">
 						<H3>Artistas</H3>
 						<P>{artistUser.length} seleccionado(s)</P>
 					</SectionFlex>
-					<SectionFlex direction="column" gap="1rem">
+					<SectionFlex direction="column" directionT="row" gap="1rem" wrapT="wrap">
 						{
 							artist?.map( ({name, images, id}) => {
 								
@@ -108,11 +108,11 @@ export const Generador = () => {
 					</SectionFlex>
 				</Card>
 				<Card>
-					<SectionFlex align="center" justify="space-between">
+					<SectionFlex align="center" justify="space-between" padding="0 0 1rem 0">
 						<H3>Canciones</H3>
 						<P>{songsUser.length} seleccionada(s)</P>
 					</SectionFlex>
-					<SectionFlex direction="column" gap="1rem">
+					<SectionFlex direction="column" directionT="row" gap="1rem" wrapT="wrap">
 						{
 							songs?.map( ({name, album, id}) => {
 								
@@ -124,11 +124,11 @@ export const Generador = () => {
 					</SectionFlex>
 				</Card>
 				<Card>
-					<SectionFlex align="center" justify="space-between">
+					<SectionFlex align="center" justify="space-between" padding="0 0 1rem 0">
 						<H3>Géneros</H3>
 						<P>{genresUser.length} seleccionado(s)</P>
 					</SectionFlex>
-					<SectionFlex direction="row" gap="1rem" wrap="wrap">
+					<SectionFlex direction="row" gap="1rem" wrap="wrap" wrapT="wrap">
 						{
 							genres?.map( (genre, i) => {
 								return (

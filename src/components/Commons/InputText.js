@@ -12,4 +12,10 @@ width: ${props => props.width};
 &::placeholder{
 	color: #acacac;
 }
+@media screen and (min-width: 768px) and (max-width: 1023.9px){
+	width: ${props => props.widthT};
+}
+@media screen and (max-width: 767.9px){
+	width: ${props => props.widthM};
+}
 `;

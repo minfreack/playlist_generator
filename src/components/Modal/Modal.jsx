@@ -19,6 +19,14 @@ padding: 2rem 1rem 1rem 1rem;
 height: 100vh;
 top: 0px;
 transition: .5s;
+@media screen and (min-width: 768px) and (max-width: 1023.9px){
+	left: 368px;
+}
+@media screen and (max-width: 767.9px){
+	left: 0;
+	width: 22.5rem;
+	padding: 2rem 1rem;
+}
 `;
 
 export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, genresUser}) => {
@@ -116,7 +124,7 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
-			}).then( res => {
+			}).then( () => {
 				setLoading(false);
 				setIsDone(true);
 			}
@@ -132,20 +140,19 @@ export const Modal = ({modal, setModal, token, userId, artistUser, songsUser, ge
 				<Button onClick={() => setModal(!modal)} >&#60; Volver a mis elecciones</Button>
 				<H3>¡Solo queda un paso más!</H3>
 				<P>Toda playlist necesita un nombre</P>
-				<InputText placeholder='Mi nueva playlist...' value={playlistName} onChange={handlePlaylistName}/>
+				<InputText placeholder='Mi nueva playlist...' widthM="18rem" value={playlistName} onChange={handlePlaylistName}/>
 				<P>Descripción</P>
-				<InputText placeholder='Esta es mi playlist...' value={playlistDesc} onChange={handlePlaylistDesc}/>
+				<InputText placeholder='Esta es mi playlist...' widthM="18rem" value={playlistDesc} onChange={handlePlaylistDesc}/>
 				<P>¿Quieres compartir tu playlist?</P>
 				<P variant>Si está activado la playlist será pública</P>
 				<input type="checkbox" id="switch" checked={playlistState} onChange={handlePlaylistState}/><label htmlFor="switch">Toggle</label>
-				<SectionFlex direction='column' justify='center' align='center' wrap='wrap' gap='2rem'>
+				<SectionFlex direction='column' justify='center' align='center' wrap='wrap' gap='2rem' gapM='1rem'>
 					<Button onClick={handleClick}>Crear playlist</Button>
 					{loading && 
 					<>
 						<SyncLoader color='#fff'/> <P>Estamos creando tu playlist...</P>
 					</>
 					}
-					{console.log(loading == false)}
 					{isDone && 
 						<>
 							<P>¡Es hora de escuchar tu nueva playlist!</P> <Button href={urlPlaylist} target='_blank'>Ir a playlist</Button>

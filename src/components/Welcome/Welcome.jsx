@@ -13,8 +13,8 @@ export const Welcome = () => {
 
 	const CLIENT_ID = '2ab6dff6b53145db89da10d5f4e710ee';
 	const AUTHORIZE = 'https://accounts.spotify.com/authorize';
-	const REDIRECT_URI = 'https://playlist-generator.vercel.app/generador';
-	// const REDIRECT_URI = 'http://localhost:3000/generador';
+	// const REDIRECT_URI = 'https://playlist-generator.vercel.app/generador';
+	const REDIRECT_URI = 'http://localhost:3000/generador';
 	const SCOPES = ['playlist-modify-public', 'playlist-modify-private', 'user-read-private', 'user-read-email'];
 	const SCOPES_URL_PARAM = SCOPES.join('%20', );
 
@@ -28,7 +28,7 @@ export const Welcome = () => {
 		<>
 			<Title>Playlist Generator</Title>
 			<SectionGrid twoColumns>
-				<Img width={450} src={welcomeImg}></Img>
+				<Img width={450} widthM={'300px'} src={welcomeImg}></Img>
 				<SectionFlex direction="column" justify="center" gap="1rem">
 					<H2>¿Qué te parece si hoy escuchas algo totalmente nuevo?</H2>
 					<H3>Sabemos que algunas veces escuchar las mismas canciones es aburrido así que ¡déjanos hacerte una playlist!</H3>

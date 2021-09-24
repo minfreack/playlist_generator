@@ -50,11 +50,11 @@ export const Search = ({token, setArtist, setSongs}) => {
 	};
 
 	return (
-		<SectionFlex variant direction="column" align="center" justify="center" margin="1rem 0">
+		<SectionFlex variant direction="column" align="center" justify="center" margin="1rem 0" paddingM="0 1rem">
 			<P>Selecciona por lo menos 1 artista, 1 canción y un género. ¡Esto nos ayudará a darnos una idea de qué es lo que te gusta!</P>
 			<InputContainer>
 				<InputIcon src={search} width={30} onClick={handleSearch}/>
-				<InputText onChange={handleInputValue} onKeyDown={handleEnter} placeholder="Escríbe un artista o canción..." width='45rem' value={searchValue}/>
+				<InputText onChange={handleInputValue} onKeyDown={handleEnter} placeholder="Escríbe un artista o canción..." width='45rem' widthM="17rem" widthT="30rem" value={searchValue}/>
 			</InputContainer>
 		</SectionFlex>
 	);
