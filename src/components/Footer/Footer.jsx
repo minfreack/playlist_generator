@@ -14,7 +14,7 @@ export const Footer = () => {
 				<Img src={spotify} width={30}></Img>
 			</SectionFlex>
 			<SectionFlex variant direction="row" align="center" justify="flex-end">
-				<P variantF>Hecho con 🤍 por <A href="https://minfreack.github.io/portfolio/" target="_blank" rel="noreferrer">Luis Ernesto</A> </P>
+				<P variantF>Hecho con ♥ por <A href="https://minfreack.github.io/portfolio/" target="_blank" rel="noreferrer">Luis Ernesto</A> </P>
 			</SectionFlex>
 		</SectionFlex>
 	);
